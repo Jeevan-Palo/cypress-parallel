@@ -31,32 +31,30 @@ jobs:
           key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
 
       - run: npm ci
-      - run: npm run cy:verify
-      - run: npm run cy:info
-
+  
       - save_cache:
-          key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+          key: 'v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}'
           paths:
-            # could not use environment variables for some reason
-            - C:\Users\circleci\AppData\Local\Cypress\Cache
-            - C:\Users\circleci\AppData\Roaming\npm-cache
+            - ~/.npm
+            - ~/.cache
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - .cache
+            - tmp
 
       # if you want to test execa's behavior on Windows
       # - run: node ./scripts/test-execa
 
+      - run: ls -la cypress
+      - run: ls -la cypress/integration
       - run:
-          name: 'Start server'
-          command: npm run start:ci:windows
-          background: true
-
-      - run:
-          name: 'Run Cypress tests'
-          command: npm run e2e:record -- --env circle=true
-          no_output_timeout: '1m'
+          name: Running cypress tests 1
+          command: $(npm bin)/cypress run --spec cypress/integration/sample1.spec.js
       - store_artifacts:
-          path: cypress\screenshots
+          path: cypress/videos
       - store_artifacts:
-          path: cypress\videos
+          path: cypress/screenshots
 
   release:
     executor: cypress/base-10
