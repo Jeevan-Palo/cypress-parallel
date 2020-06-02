@@ -1,1 +1,1 @@
-# MangoDevelopersWebpage
+# Cypress Paralell
