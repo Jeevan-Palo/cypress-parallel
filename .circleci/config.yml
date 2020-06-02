@@ -36,12 +36,10 @@ jobs:
           key: 'v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}'
           paths:
             # could not use environment variables for some reason
-            - C:\Users\circleci\AppData\Local\Cypress\Cache
-            - C:\Users\circleci\AppData\Roaming\npm-cache
             - ~/.npm
             - ~/.cache
       - persist_to_workspace:
-          root: workspace
+          root: ~/app
           paths:
             - .cache
             - tmp
