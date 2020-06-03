@@ -77,7 +77,7 @@ jobs:
       - run: ls -la cypress/integration
       - run:
           name: Running cypress tests 2
-          command: $(npm bin)/cypress run --spec cypress/integration/Test1/TC01.spec.js
+          command: $(npm bin)/cypress run --spec cypress/integration/test1/TC01.spec.js
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
