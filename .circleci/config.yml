@@ -63,6 +63,25 @@ jobs:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
+          
+  test3:
+    working_directory: ~/tmp
+    docker:
+      - image: 'cypress/base:10'
+        environment:
+          TERM: xterm
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: ls -la cypress
+      - run: ls -la cypress/integration
+      - run:
+          name: Running cypress tests 2
+          command: $(npm bin)/cypress run --spec cypress/integration/Test1/TC01.spec.js
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
   
 workflows:
   version: 2
@@ -73,5 +92,8 @@ workflows:
           requires:
             - build
       - test2:
+          requires:
+            - build 
+      - test3:
           requires:
             - build
