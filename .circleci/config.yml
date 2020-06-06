@@ -8,12 +8,7 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-       - store_artifacts:
-          path: cypress/videos
-      - store_artifacts:
-          path: cypress/screenshots
           record: true
           parallel: true
           parallelism: 2
           group: 2 machines
-
