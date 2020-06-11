@@ -31,8 +31,6 @@ jobs:
           key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
 
       - run: npm ci
-      - run: npm run cy:verify
-      - run: npm run cy:info
 
       - save_cache:
           key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
@@ -49,14 +47,19 @@ jobs:
           command: npm run start:ci:windows
           background: true
 
+   - run: ls -la cypress
+      - run: ls -la cypress/integration
       - run:
-          name: 'Run Cypress tests'
-          command: npm run e2e:record -- --env circle=true
-          no_output_timeout: '1m'
+          name: Running cypress tests 1
+          command: $(npm bin)/cypress run --reporter mochawesome --reporter-options "reportFilename=E2E"
       - store_artifacts:
-          path: cypress\screenshots
+          path: cypress/videos
       - store_artifacts:
-          path: cypress\videos
+          path: cypress/screenshots
+      - store_artifacts:
+          path: cypress/reports
+      - store_artifacts:
+          path: mochawesome-report  
 
   release:
     executor: cypress/base-10
